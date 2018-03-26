@@ -9,28 +9,28 @@ import static org.junit.Assert.assertFalse;
 public class IntervalTest {
 
 
-    private static final Interval intervalCorrect = new Interval(2, 100);
-    private static final Interval intervalInCorrect = new Interval(100, 2);
+    private static final Interval INTERVAL_CORRECT = new Interval(2, 100);
+    private static final Interval INTERVAL_INCORRECT = new Interval(100, 2);
 
     @Test
     public void testConstructorLogic() {
-        assertEquals(intervalCorrect.getStart(), intervalInCorrect.getStart());
-        assertEquals(intervalCorrect.getEnd(), intervalInCorrect.getEnd());
+        assertEquals(INTERVAL_CORRECT.getStart(), INTERVAL_INCORRECT.getStart());
+        assertEquals(INTERVAL_CORRECT.getEnd(), INTERVAL_INCORRECT.getEnd());
     }
 
     @Test
     public void testEqualsNotInstances() {
-        assertFalse(intervalCorrect == intervalInCorrect);
+        assertFalse(INTERVAL_CORRECT == INTERVAL_INCORRECT);
     }
 
     @Test
     public void testEqualsMethodEquals() {
-        assertTrue(intervalCorrect.equals(intervalInCorrect));
+        assertTrue(INTERVAL_CORRECT.equals(INTERVAL_INCORRECT));
     }
 
     @Test
     public void testEqualsMethodHashCode() {
-        assertEquals(intervalCorrect.hashCode(), intervalInCorrect.hashCode());
+        assertEquals(INTERVAL_CORRECT.hashCode(), INTERVAL_INCORRECT.hashCode());
     }
 
 

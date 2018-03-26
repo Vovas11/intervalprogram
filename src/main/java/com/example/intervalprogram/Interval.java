@@ -1,9 +1,12 @@
 package com.example.intervalprogram;
 
 /**
- * Immutable data holder representing an entity of interval
+ * Immutable data holder representing an entity of interval (range)
+ * Stores two values: starting number of an interval and ending number
+ *
  */
 public class Interval {
+
     private final int start;
     private final int end;
 
@@ -52,9 +55,6 @@ public class Interval {
 
     @Override
     public String toString() {
-        return "Interval{" +
-                "start=" + start +
-                ", end=" + end +
-                '}';
+        return start + "-" + end;
     }
 }
