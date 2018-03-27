@@ -16,7 +16,7 @@ public class Main {
 
 
     private static void runExample(int n, String includesStr, String excludesStr) {
-        IntervalHandler handler = new IntervalHandlerBySet();
+        IntervalHandler handler = new IntervalHandlerByDirectSearch();
         List<Interval> includes = handler.parseIntervals(includesStr);
         List<Interval> excludes = handler.parseIntervals(excludesStr);
         List<Interval> intervals = handler.processIntervals(includes, excludes);

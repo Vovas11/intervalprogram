@@ -5,6 +5,11 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * The subclass implements the method {@code processIntervals} that uses direct interaction
+ * between each include and each exclude.
+ * The method is not so fast but efficiency does not drop in case of wide intervals
+ */
 public class IntervalHandlerByDirectSearch extends IntervalHandler {
 
     @Override
@@ -15,9 +20,8 @@ public class IntervalHandlerByDirectSearch extends IntervalHandler {
         return complementIntervals(includesOrdered, excludesOrdered);
     }
 
-
     /**
-     * Makes conjunction and ordering of given intervals
+     * Merges and orders given intervals
      *
      * @param intervals list of non ordered intervals
      * @return list of merged (non overlapped) ordered intervals
@@ -51,6 +55,14 @@ public class IntervalHandlerByDirectSearch extends IntervalHandler {
         return ordered;
     }
 
+    /**
+     * Performs complement (difference in Set theory) of given includes with given excludes
+     * Logic consists in interaction of each exclude with whole list of includes
+     *
+     * @param includes list of includes
+     * @param excludes list of excludes
+     * @return list of intervals representing difference between includes and excludes(includes with excluded excludes)
+     */
     private List<Interval> complementIntervals(List<Interval> includes, List<Interval> excludes) {
         if (excludes.isEmpty() || includes.isEmpty()) {
             return includes;
@@ -65,21 +77,30 @@ public class IntervalHandlerByDirectSearch extends IntervalHandler {
         return orderIntervals(interacted);
     }
 
-
+    /**
+     * Performs complement of given include and exclude
+     *
+     * @param include include
+     * @param exclude exclude
+     * @return list of intervals representing include with excluded exclude
+     */
     private List<Interval> interactIntervals(Interval include, Interval exclude) {
         List<Interval> result = new ArrayList<>();
-        if (include.getStart() > exclude.getEnd() || exclude.getStart() > include.getEnd()) { // no overlap
+        int inStart = include.getStart();
+        int inEnd = include.getEnd();
+        int exStart = exclude.getStart();
+        int exEnd = exclude.getEnd();
+
+        if (inStart > exEnd || exStart > inEnd) { // no overlap
             result.add(include);
-        } else if (include.getStart() > exclude.getStart() && include.getEnd() > exclude.getEnd()) {
-            result.add(new Interval(exclude.getEnd() + 1, include.getEnd()));
-        } else if (exclude.getStart() > include.getStart() && exclude.getEnd() > include.getEnd()) {
-            result.add(new Interval(include.getStart(), exclude.getStart() - 1));
-        } else if (exclude.getStart() > include.getStart() && include.getEnd() > exclude.getEnd()) {
-            result.add(new Interval(include.getStart(), exclude.getStart() - 1));
-            result.add(new Interval(exclude.getEnd() + 1, include.getEnd()));
+        } else if (inStart > exStart && inEnd > exEnd) {
+            result.add(new Interval(exEnd + 1, inEnd));
+        } else if (exStart > inStart && exEnd > inEnd) {
+            result.add(new Interval(inStart, exStart - 1));
+        } else if (exStart > inStart && inEnd > exEnd) {
+            result.add(new Interval(inStart, exStart - 1));
+            result.add(new Interval(exEnd + 1, inEnd));
         }
         return result;
     }
-
-
 }
