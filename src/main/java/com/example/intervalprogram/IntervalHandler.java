@@ -38,8 +38,8 @@ public abstract class IntervalHandler {
         List<Interval> result = new ArrayList<>();
         String[] initArray = intervals.split(",\\s*");
         for (String str : initArray) {
-            if (str.matches("^\\d+-\\d+$")) {
-                String[] interval = str.split("-");
+            if (str.matches("^-?\\d+--?\\d+$")) {
+                String[] interval = str.split("(?<=[^-])-");
                 result.add(new Interval(Integer.parseInt(interval[0]), Integer.parseInt(interval[1])));
             }
         }
